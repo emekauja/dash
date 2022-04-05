@@ -3,6 +3,13 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 
+const securityHeaders = [
+  {
+    key: 'Content-Security-Policy',
+    value: 'allow-all-mixed-content',
+  },
+];
+
 module.exports = withBundleAnalyzer({
   eslint: {
     dirs: ['.'],
@@ -14,4 +21,5 @@ module.exports = withBundleAnalyzer({
   // So, the source code is "basePath-ready".
   // You can remove `basePath` if you don't need it.
   reactStrictMode: true,
+  headers: securityHeaders,
 });
