@@ -10,9 +10,9 @@ export const CardsSkeleton = ({ count = 1 }: { count?: number }) => {
         .map((_, index) => (
           <div
             key={index}
-            className=" flex flex-col space-y-6 bg-gray-800 px-8 py-6 shadow "
+            className="flex h-screen flex-col space-y-6 bg-gray-800 px-8 py-6 shadow"
           >
-            <div className="flex  h-full flex-row items-center justify-between">
+            <div className="flex flex-row items-center justify-between">
               <div className="flex space-x-2">
                 <Skeleton variant="rectangle" width={85} height={25} />
                 <Skeleton width={50} />
