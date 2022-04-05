@@ -1,7 +1,7 @@
-# Boilerplate and Starter for Next JS 12+, Tailwind CSS 3 and TypeScript [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/cloudposse.svg?style=social&label=Follow%20%40Ixartz)](https://twitter.com/ujadninth)
+# Boilerplate and Starter for Next JS 12+, Tailwind CSS 3 and TypeScript [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/cloudposse.svg?style=social&label=Follow%20%40Ujadninth)](https://twitter.com/ujadninth)
 
 <p align="center">
-  <a href="https://creativedesignsguru.com/demo/Nextjs-Boilerplate/"><img src="public/assets/images/startrek.png?raw=true" alt="Next js star-trek app example"></a>
+  <a href="https://startrek-one.vercel.app"><img src="public/assets/images/startrek.png?raw=true" alt="Next js star-trek app example"></a>
 </p>
 
 🚀 Star Trek Api Project and built with  Next.js, Tailwind CSS and TypeScript ⚡️.
@@ -37,9 +37,9 @@ Open http://localhost:3000 with your favorite browser to see your project.
 ├── src
 │   ├── assets               # Atomic layout components
 │ 	├── components
-│ 	│ 		├── controls 				# Controlled components
-│ 	│ 		├── forms						# form inputs components
-│ 	│ 		└── primitive				# Uncontrolled components
+│ 	│ 		├── controls	# Controlled components
+│ 	│ 		├── forms	# form inputs components
+│ 	│ 		└── primitive	# Uncontrolled components
 │   ├── pages                # Next JS pages
 │   ├── styles               # PostCSS style folder with Tailwind
 │   ├── templates            # Default template
@@ -47,15 +47,6 @@ Open http://localhost:3000 with your favorite browser to see your project.
 ├── tailwind.config.js       # Tailwind CSS configuration
 └── tsconfig.json            # TypeScript configuration
 ```
-
-### Customization
-
-You can easily configure Next js Boilerplate. Please change the following file:
-
-- `public/apple-touch-icon.png`, `public/favicon.ico`, `public/favicon-16x16.png` and `public/favicon-32x32.png`: your website favicon, you can generate from https://favicon.io/favicon-converter/
-- `src/styles/global.css`: your CSS file using Tailwind CSS
-- `src/utils/AppConfig.ts`: configuration file
-- `src/templates/Main.tsx`: default theme
 
 ### Deploy to production
 
