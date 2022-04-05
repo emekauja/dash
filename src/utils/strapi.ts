@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { IData } from '@/types';
 
-const BASE_URL = 'http://stapi.co/api/v1';
+const BASE_URL = 'https://stapi.co/api/v1';
 const base = axios.create({
   baseURL: `${BASE_URL}/rest`,
 });
