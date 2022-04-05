@@ -35,8 +35,6 @@ const Index = () => {
     length: 6,
   });
 
-  // todo:  issue when you are in paginated page and search new item u cant see it cause page is not been reset
-
   return (
     <div className="bg-gray-800">
       {/* eslint-disable-next-line tailwindcss/migration-from-tailwind-2 */}
@@ -44,8 +42,14 @@ const Index = () => {
         <HeaderWithSearch
           menubar={menubar}
           selectedMenuItem={dataType}
-          onMenuItemSelect={(val) => setDataType(val)}
-          onSearchChange={(text) => setSearchValue(text)}
+          onMenuItemSelect={(val) => {
+            setActivePage(0);
+            setDataType(val);
+          }}
+          onSearchChange={(text) => {
+            setActivePage(0);
+            setSearchValue(text);
+          }}
         />
       </div>
 
