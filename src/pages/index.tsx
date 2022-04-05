@@ -1,185 +1,77 @@
-import { useRouter } from 'next/router';
+import React, { useState } from 'react';
 
-import { Meta } from '@/layout/Meta';
-import { Main } from '@/templates/Main';
+import { useQuery } from 'react-query';
+
+import { HeaderWithSearch } from '@/components/controls/headerwithsearch/headerwithsearch';
+import { Card } from '@/components/primitive/card/card';
+import { Pagination } from '@/components/primitive/pagination/pagination';
+import { IData, MenuObj } from '@/types';
+import { getPagingRange } from '@/utils/getPageRange';
+import { fetchDataByType } from '@/utils/strapi';
+import useDebounce from '@/utils/useDebounce';
+
+const menubar: MenuObj = {
+  spacecraft: { key: 'spacecraft', datavalue: 'spacecrafts' },
+  animal: { key: 'animal', datavalue: 'animals' },
+  comics: { key: 'comics', datavalue: 'comics' },
+  book: { key: 'book', datavalue: 'books' },
+};
 
 const Index = () => {
-  const router = useRouter();
+  // const router = useRouter();
+  const [activePage, setActivePage] = useState(0);
+  const [searchValue, setSearchValue] = useState('');
+  const debouncedSearchValue = useDebounce(searchValue, 800);
+  const [dataType, setDataType] = useState(menubar.spacecraft.key);
+
+  const { data, isPreviousData } = useQuery(
+    ['stapis', dataType, debouncedSearchValue, activePage],
+    () => fetchDataByType(dataType, debouncedSearchValue, activePage),
+    { keepPreviousData: true }
+  );
+
+  const pageNumbers = getPagingRange(activePage, {
+    total: data?.page.totalPages,
+    length: 6,
+  });
+
+  // todo:  issue when you are in paginated page and search new item u cant see it cause page is not been reset
 
   return (
-    <Main
-      meta={
-        <Meta
-          title="Next.js Boilerplate Presentation"
-          description="Next js Boilerplate is the perfect starter code for your project. Build your React application with the Next.js framework."
+    <div className="bg-gray-800">
+      {/* eslint-disable-next-line tailwindcss/migration-from-tailwind-2 */}
+      <div className="sticky top-0 z-50 w-full bg-black bg-opacity-60 p-5 shadow-sm backdrop-blur-md backdrop-saturate-150">
+        <HeaderWithSearch
+          menubar={menubar}
+          selectedMenuItem={dataType}
+          onMenuItemSelect={(val) => setDataType(val)}
+          onSearchChange={(text) => setSearchValue(text)}
         />
-      }
-    >
-      <a href="https://github.com/ixartz/Next-js-Boilerplate">
-        <img
-          src={`${router.basePath}/assets/images/nextjs-starter-banner.png`}
-          alt="Nextjs starter banner"
+      </div>
+
+      <div className="grid min-h-screen grid-cols-3 place-content-center gap-x-3 gap-y-5 px-24 pb-24 pt-10">
+        {!!data?.[menubar[dataType].datavalue as keyof Omit<IData, 'page'>] &&
+          data?.[menubar[dataType].datavalue as keyof Omit<IData, 'page'>]?.map(
+            (item) => <Card key={item.uid} item={item} />
+          )}
+      </div>
+
+      <div className="fixed inset-x-0 bottom-5 mx-auto  w-2/3">
+        <Pagination
+          activePage={activePage}
+          pageNumbers={pageNumbers}
+          disablePreviousBtn={activePage === 0}
+          disableNextBtn={isPreviousData || data?.page?.lastPage}
+          onNextClick={() => {
+            if (!isPreviousData && !data?.page?.lastPage) {
+              setActivePage((prev) => prev + 1);
+            }
+          }}
+          onPreviousClick={() => setActivePage((prev) => Math.max(prev - 1, 0))}
+          onPageItemSelect={(val) => setActivePage(val)}
         />
-      </a>
-      <h1 className="text-2xl font-bold">
-        Boilerplate code for your Nextjs project with Tailwind CSS
-      </h1>
-      <p>
-        <span role="img" aria-label="rocket">
-          🚀
-        </span>{' '}
-        Next.js Boilerplate is a starter code for your Next js project by
-        putting developer experience first .{' '}
-        <span role="img" aria-label="zap">
-          ⚡️
-        </span>{' '}
-        Made with Next.js, TypeScript, ESLint, Prettier, Husky, Lint-Staged,
-        VSCode, Netlify, PostCSS, Tailwind CSS.
-      </p>
-      <h2 className="text-lg font-semibold">Next js Boilerplate Features</h2>
-      <p>Developer experience first:</p>
-      <ul>
-        <li>
-          <span role="img" aria-label="fire">
-            🔥
-          </span>{' '}
-          <a href="https://nextjs.org" rel="nofollow">
-            Next.js
-          </a>{' '}
-          for Static Site Generator
-        </li>
-        <li>
-          <span role="img" aria-label="art">
-            🎨
-          </span>{' '}
-          Integrate with{' '}
-          <a href="https://tailwindcss.com" rel="nofollow">
-            Tailwind CSS
-          </a>
-        </li>
-        <li>
-          <span role="img" aria-label="nail_care">
-            💅
-          </span>{' '}
-          PostCSS for processing Tailwind CSS
-        </li>
-        <li>
-          <span role="img" aria-label="tada">
-            🎉
-          </span>{' '}
-          Type checking Typescript
-        </li>
-        <li>
-          <span role="img" aria-label="pencil2">
-            ✏️
-          </span>{' '}
-          Linter with{' '}
-          <a href="https://eslint.org" rel="nofollow">
-            ESLint
-          </a>
-        </li>
-        <li>
-          <span role="img" aria-label="hammer_and_wrench">
-            🛠
-          </span>{' '}
-          Code Formatter with{' '}
-          <a href="https://prettier.io" rel="nofollow">
-            Prettier
-          </a>
-        </li>
-        <li>
-          <span role="img" aria-label="fox_face">
-            🦊
-          </span>{' '}
-          Husky for Git Hooks
-        </li>
-        <li>
-          <span role="img" aria-label="no_entry_sign">
-            🚫
-          </span>{' '}
-          Lint-staged for running linters on Git staged files
-        </li>
-        <li>
-          <span role="img" aria-label="no_entry_sign">
-            🗂
-          </span>{' '}
-          VSCode configuration: Debug, Settings, Tasks and extension for
-          PostCSS, ESLint, Prettier, TypeScript
-        </li>
-        <li>
-          <span role="img" aria-label="robot">
-            🤖
-          </span>{' '}
-          SEO metadata, JSON-LD and Open Graph tags with Next SEO
-        </li>
-        <li>
-          <span role="img" aria-label="robot">
-            ⚙️
-          </span>{' '}
-          <a
-            href="https://www.npmjs.com/package/@next/bundle-analyzer"
-            rel="nofollow"
-          >
-            Bundler Analyzer
-          </a>
-        </li>
-        <li>
-          <span role="img" aria-label="rainbow">
-            🌈
-          </span>{' '}
-          Include a FREE minimalist theme
-        </li>
-        <li>
-          <span role="img" aria-label="hundred">
-            💯
-          </span>{' '}
-          Maximize lighthouse score
-        </li>
-      </ul>
-      <p>Built-in feature from Next.js:</p>
-      <ul>
-        <li>
-          <span role="img" aria-label="coffee">
-            ☕
-          </span>{' '}
-          Minify HTML &amp; CSS
-        </li>
-        <li>
-          <span role="img" aria-label="dash">
-            💨
-          </span>{' '}
-          Live reload
-        </li>
-        <li>
-          <span role="img" aria-label="white_check_mark">
-            ✅
-          </span>{' '}
-          Cache busting
-        </li>
-      </ul>
-      <h2 className="text-lg font-semibold">Our Stater code Philosophy</h2>
-      <ul>
-        <li>Minimal code</li>
-        <li>SEO-friendly</li>
-        <li>
-          <span role="img" aria-label="rocket">
-            🚀
-          </span>{' '}
-          Production-ready
-        </li>
-      </ul>
-      <p>
-        Check our GitHub project for more information about{' '}
-        <a href="https://github.com/ixartz/Next-js-Boilerplate">
-          Nextjs Boilerplate
-        </a>
-        . You can also browse our{' '}
-        <a href="https://creativedesignsguru.com/category/nextjs/">
-          Premium NextJS Templates
-        </a>{' '}
-        on our website to support this project.
-      </p>
-    </Main>
+      </div>
+    </div>
   );
 };
 
