@@ -3,10 +3,18 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 
+const ContentSecurityPolicy = `
+  default-src 'self';
+  script-src 'self';
+  child-src stapi.co;
+  style-src 'self' stapi.co;
+  font-src 'self';  
+`;
+
 const securityHeaders = [
   {
     key: 'Content-Security-Policy',
-    value: 'allow-all-mixed-content',
+    value: ContentSecurityPolicy.replace(/\s{2,}/g, ' ').trim(),
   },
 ];
 
