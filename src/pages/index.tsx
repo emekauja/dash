@@ -60,21 +60,25 @@ const Index = () => {
           )}
       </div>
 
-      <div className="fixed inset-x-0 bottom-5 mx-auto  w-2/3">
-        <Pagination
-          activePage={activePage}
-          pageNumbers={pageNumbers}
-          disablePreviousBtn={activePage === 0}
-          disableNextBtn={isPreviousData || data?.page?.lastPage}
-          onNextClick={() => {
-            if (!isPreviousData && !data?.page?.lastPage) {
-              setActivePage((prev) => prev + 1);
+      {!data?.page?.lastPage ? (
+        <div className="fixed inset-x-0 bottom-5 mx-auto  w-2/3">
+          <Pagination
+            activePage={activePage}
+            pageNumbers={pageNumbers}
+            disablePreviousBtn={activePage === 0}
+            disableNextBtn={isPreviousData || data?.page?.lastPage}
+            onNextClick={() => {
+              if (!isPreviousData && !data?.page?.lastPage) {
+                setActivePage((prev) => prev + 1);
+              }
+            }}
+            onPreviousClick={() =>
+              setActivePage((prev) => Math.max(prev - 1, 0))
             }
-          }}
-          onPreviousClick={() => setActivePage((prev) => Math.max(prev - 1, 0))}
-          onPageItemSelect={(val) => setActivePage(val)}
-        />
-      </div>
+            onPageItemSelect={(val) => setActivePage(val)}
+          />
+        </div>
+      ) : null}
     </div>
   );
 };
