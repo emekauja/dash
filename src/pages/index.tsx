@@ -39,7 +39,7 @@ const Index = () => {
 
   if (isError) {
     return (
-      <div className="flex items-center justify-center space-x-3 bg-black">
+      <div className="flex min-h-screen items-center justify-center space-x-3 bg-black">
         <p className="text-gray-200">
           something went wrong{' '}
           <Button onClick={() => refetch()}>try again</Button>
@@ -66,10 +66,19 @@ const Index = () => {
         />
       </div>
 
+      {!!data?.page?.totalElements || searchValue ? (
+        <p className="pt-5 text-center text-gray-400">
+          <span>
+            {searchValue ? `Searched for phrase ${searchValue}. ` : null}
+          </span>
+          {`There were ${data?.page?.totalElements} ${menubar[dataType].datavalue}.`}
+        </p>
+      ) : null}
+
       {isLoading ? (
         <CardsSkeleton />
       ) : (
-        <div className="grid min-h-screen grid-cols-3 place-content-center gap-x-3 gap-y-5 px-24 pb-24 pt-10">
+        <div className="grid min-h-screen grid-cols-3 place-content-center gap-x-3 gap-y-5 px-24 pb-24 pt-5">
           {!!data?.[menubar[dataType].datavalue as keyof Omit<IData, 'page'>] &&
             data?.[
               menubar[dataType].datavalue as keyof Omit<IData, 'page'>
