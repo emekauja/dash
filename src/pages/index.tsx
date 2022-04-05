@@ -39,8 +39,8 @@ const Index = () => {
 
   if (isError) {
     return (
-      <div className="flex items-center justify-center space-x-3">
-        <p>
+      <div className="flex items-center justify-center space-x-3 bg-black">
+        <p className="text-gray-200">
           something went wrong{' '}
           <Button onClick={() => refetch()}>try again</Button>
         </p>

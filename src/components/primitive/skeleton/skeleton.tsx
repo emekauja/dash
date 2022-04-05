@@ -1,4 +1,4 @@
-import classNames from 'classNames';
+import classNames from 'classnames';
 
 const skeletonClass = classNames('animate-pulse');
 const textClass = classNames('rounded');
