@@ -1,4 +1,4 @@
-# Boilerplate and Starter for Next JS 12+, Tailwind CSS 3 and TypeScript [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/cloudposse.svg?style=social&label=Follow%20%40Ujadninth)](https://twitter.com/ujadninth)
+# Star Trek API little project, [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/cloudposse.svg?style=social&label=Follow%20%40Ujadninth)](https://twitter.com/ujadninth)
 
 <p align="center">
   <a href="https://startrek-one.vercel.app"><img src="public/assets/images/startrek.png?raw=true" alt="Next js star-trek app example"></a>
