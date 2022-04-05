@@ -3,8 +3,10 @@ import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 
 import { HeaderWithSearch } from '@/components/controls/headerwithsearch/headerwithsearch';
+import { Button } from '@/components/forms/button/button';
 import { Card } from '@/components/primitive/card/card';
 import { Pagination } from '@/components/primitive/pagination/pagination';
+import { CardsSkeleton } from '@/components/primitive/skeleton/cardsskeleton';
 import { IData, MenuObj } from '@/types';
 import { getPagingRange } from '@/utils/getPageRange';
 import { fetchDataByType } from '@/utils/strapi';
@@ -24,7 +26,7 @@ const Index = () => {
   const debouncedSearchValue = useDebounce(searchValue, 800);
   const [dataType, setDataType] = useState(menubar.spacecraft.key);
 
-  const { data, isPreviousData } = useQuery(
+  const { data, isLoading, refetch, isError, isPreviousData } = useQuery(
     ['stapis', dataType, debouncedSearchValue, activePage],
     () => fetchDataByType(dataType, debouncedSearchValue, activePage),
     { keepPreviousData: true }
@@ -34,6 +36,17 @@ const Index = () => {
     total: data?.page.totalPages,
     length: 6,
   });
+
+  if (isError) {
+    return (
+      <div className="flex items-center justify-center space-x-3">
+        <p>
+          something went wrong{' '}
+          <Button onClick={() => refetch()}>try again</Button>
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gray-800">
@@ -53,12 +66,16 @@ const Index = () => {
         />
       </div>
 
-      <div className="grid min-h-screen grid-cols-3 place-content-center gap-x-3 gap-y-5 px-24 pb-24 pt-10">
-        {!!data?.[menubar[dataType].datavalue as keyof Omit<IData, 'page'>] &&
-          data?.[menubar[dataType].datavalue as keyof Omit<IData, 'page'>]?.map(
-            (item) => <Card key={item.uid} item={item} />
-          )}
-      </div>
+      {isLoading ? (
+        <CardsSkeleton />
+      ) : (
+        <div className="grid min-h-screen grid-cols-3 place-content-center gap-x-3 gap-y-5 px-24 pb-24 pt-10">
+          {!!data?.[menubar[dataType].datavalue as keyof Omit<IData, 'page'>] &&
+            data?.[
+              menubar[dataType].datavalue as keyof Omit<IData, 'page'>
+            ]?.map((item) => <Card key={item.uid} item={item} />)}
+        </div>
+      )}
 
       {!data?.page?.lastPage ? (
         <div className="fixed inset-x-0 bottom-5 mx-auto  w-2/3">
